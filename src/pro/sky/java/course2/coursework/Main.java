@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class Main {
 
-    private static final TaskService taskService = new TaskService();
+    private static final TaskService TASK_SERVICE = new TaskService();
     private static final Pattern DATE_TIME_PATTERN = Pattern.compile("\\d{2}\\.\\d{2}\\.\\d{4} \\d{2}\\:\\d{2}");
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
     private static final Pattern DATE_PATTERN = Pattern.compile("\\d{2}\\.\\d{2}\\.\\d{4}");
@@ -30,7 +30,7 @@ public class Main {
                             deleteTask(scanner);
                             break;
                         case 3:
-                            getTasksByDate(scanner);
+                            TasksByDate(scanner);
                             break;
                         case 0:
                             break label;
@@ -41,7 +41,7 @@ public class Main {
                 }
             }
         } catch (IncorrectArgumentException e) {
-            throw new RuntimeException(e);
+            e.getMessage();
         }
     }
 
@@ -83,7 +83,7 @@ public class Main {
                 System.out.println("Повторяемость выбрана некорректно.");
         }
 
-        taskService.createTask(task);
+        TASK_SERVICE.createTask(task);
         System.out.println("Задача создана");
     }
 
@@ -93,7 +93,6 @@ public class Main {
 
         if (title.isBlank()) {
             System.out.println("Название не может быть пустым");
-            scanner.close();
         }
         return title;
     }
@@ -104,7 +103,6 @@ public class Main {
 
         if (description.isBlank()) {
             System.out.println("Описание не может быть пустым");
-            scanner.close();
         }
 
         return description;
@@ -126,7 +124,6 @@ public class Main {
                 break;
             default:
                 System.out.println("Некорректные данные");
-                scanner.close();
         }
 
         return taskType;
@@ -142,7 +139,6 @@ public class Main {
             taskDateTime = LocalDateTime.parse(dateTime, DATE_TIME_FORMATTER);
         } else {
             System.out.println("Введите дату и время в формате dd.MM.yyyy HH:mm:");
-            scanner.close();
         }
 
         return taskDateTime;
@@ -163,7 +159,6 @@ public class Main {
             repeatable = scanner.nextInt();
         }else {
             System.out.println("Повторяемость выбрана некорректно.");
-            scanner.close();
         }
 
         return repeatable;
@@ -176,7 +171,7 @@ public class Main {
         int id = scanner.nextInt();
 
         try {
-            taskService.removeTask(id);
+            TASK_SERVICE.removeTask(id);
             System.out.println("Задача " + id + " удалена");
             System.out.println();
         } catch (TaskNotFoundException e) {
@@ -185,7 +180,7 @@ public class Main {
 
     }
 
-    private static void getTasksByDate(Scanner scanner) {
+    private static void TasksByDate(Scanner scanner) {
 
         System.out.println("Введите дату в формате dd.MM.yyyy");
 
@@ -193,10 +188,9 @@ public class Main {
         if (scanner.hasNext(DATE_PATTERN)) {
             String date = scanner.next(DATE_PATTERN);
             taskDate = LocalDate.parse(date, DATE_FORMATTER);
-            taskService.getTasksByDate(taskDate);
+            TASK_SERVICE.getTasksByDate(taskDate);
         } else {
             System.out.println("Введите дату и время в формате dd.MM.yyyy HH:mm:");
-            scanner.close();
         }
     }
 

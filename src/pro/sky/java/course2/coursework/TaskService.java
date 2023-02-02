@@ -6,7 +6,7 @@ import java.util.*;
 
 public class TaskService {
 
-    private Map<Integer, Task> taskMap = new HashMap<>();
+    private final Map<Integer, Task> taskMap = new HashMap<>();
 
     public void createTask(Task task) {
         this.taskMap.put(task.getId(), task);
@@ -24,10 +24,16 @@ public class TaskService {
 
         for (Task task : taskMap.values()) {
             LocalDateTime taskDate = task.getTaskTime();
+            LocalDate taskNextTime = task.getNextTaskDate(taskDate.toLocalDate());
+
 
             if (taskDate.toLocalDate().equals(date)) {
                 System.out.println(task);
-
+                if (taskNextTime != null) {
+                    System.out.println("Следующая дата задачи: " + taskNextTime);
+                } else {
+                    System.out.println("Задача не повторяется");
+                }
             }else {
                 System.out.println("Нет задачи на эту дату");
             }

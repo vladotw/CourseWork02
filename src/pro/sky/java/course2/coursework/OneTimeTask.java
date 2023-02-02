@@ -1,5 +1,6 @@
 package pro.sky.java.course2.coursework;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class OneTimeTask extends Task{
@@ -9,7 +10,7 @@ public class OneTimeTask extends Task{
     }
 
     @Override
-    public LocalDateTime getNextTaskDate(LocalDateTime dateTime) {
+    public LocalDate getNextTaskDate(LocalDate date) {
         return null;
     }
 }
