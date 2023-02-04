@@ -20,23 +20,28 @@ public class TaskService {
         }
     }
 
-    public void getTasksByDate(LocalDate date) {
+    public List<Task> getTasksByDate(LocalDate date) {
+
+        List<Task> taskByDayList = new ArrayList<>();
 
         for (Task task : taskMap.values()) {
             LocalDateTime taskDate = task.getTaskTime();
             LocalDate taskNextTime = task.getNextTaskDate(taskDate.toLocalDate());
 
-
             if (taskDate.toLocalDate().equals(date)) {
-                System.out.println(task);
-                if (taskNextTime != null) {
-                    System.out.println("Следующая дата задачи: " + taskNextTime);
-                } else {
-                    System.out.println("Задача не повторяется");
-                }
-            }else {
-                System.out.println("Нет задачи на эту дату");
+                taskByDayList.add(task);
+                continue;
             }
+
+            do {
+                if (taskNextTime != null && taskNextTime.equals(date)) {
+                    taskByDayList.add(task);
+                    break;
+                }
+                taskNextTime = task.getNextTaskDate(taskNextTime);
+            } while (taskNextTime.isBefore(date));
         }
+
+        return taskByDayList;
     }
 }

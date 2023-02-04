@@ -3,6 +3,7 @@ package pro.sky.java.course2.coursework;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -15,6 +16,7 @@ public class Main {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     public static void main(String[] args) {
+
         try (Scanner scanner = new Scanner(System.in)) {
             label:
             while (true) {
@@ -30,7 +32,7 @@ public class Main {
                             deleteTask(scanner);
                             break;
                         case 3:
-                            TasksByDate(scanner);
+                            tasksByDate(scanner);
                             break;
                         case 0:
                             break label;
@@ -41,8 +43,10 @@ public class Main {
                 }
             }
         } catch (IncorrectArgumentException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
+
+
     }
 
     private static void inputTask(Scanner scanner) throws IncorrectArgumentException {
@@ -180,7 +184,7 @@ public class Main {
 
     }
 
-    private static void TasksByDate(Scanner scanner) {
+    private static void tasksByDate(Scanner scanner) {
 
         System.out.println("Введите дату в формате dd.MM.yyyy");
 
@@ -188,9 +192,11 @@ public class Main {
         if (scanner.hasNext(DATE_PATTERN)) {
             String date = scanner.next(DATE_PATTERN);
             taskDate = LocalDate.parse(date, DATE_FORMATTER);
-            TASK_SERVICE.getTasksByDate(taskDate);
+
+            List<Task> tasksByDate = TASK_SERVICE.getTasksByDate(taskDate);
+            System.out.println(tasksByDate);
         } else {
-            System.out.println("Введите дату и время в формате dd.MM.yyyy HH:mm:");
+            System.out.println("Введите дату и время в формате dd.MM.yyyy");
         }
     }
 
