@@ -25,10 +25,11 @@ public class TaskService {
         List<Task> taskByDayList = new ArrayList<>();
 
         for (Task task : taskMap.values()) {
+
             LocalDateTime taskDate = task.getTaskTime();
             LocalDate taskNextTime = task.getNextTaskDate(taskDate.toLocalDate());
 
-            if (taskDate.toLocalDate().equals(date)) {
+            if (taskNextTime == null || taskDate.toLocalDate().equals(date)) {
                 taskByDayList.add(task);
                 continue;
             }
